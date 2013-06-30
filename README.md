@@ -23,23 +23,23 @@ Titlekit uses [rchardet19](https://github.com/oleander/rchardet) to detect unkno
 A small hello world of Titlekit: **Converting from .srt to .ssa format**
 
 ```ruby
-  mission = Titlekit::Mission.new         # (1) Initialize
-  mission.have { file('existing.srt') }    # (2) Specify what you have
-  mission.want { file('converted.ssa') }   # (3) Specify what you want
-  mission.fulfill                          # (4) Make it happen
+  job = Titlekit::Job.new             # (1) Initialize
+  job.have { file('existing.srt') }   # (2) Specify what you have
+  job.want { file('converted.ssa') }  # (3) Specify what you want
+  job.run                             # (4) Make it happen
 ```
 ### Checking success
 
-The return value from `#fulfill` will tell you if the mission was a success. If it was not,
+The return value from `#run` will tell you if the job was a success. If it was not,
 you can access `#report` to get messages related to the direct failure cause and also on
 anything suspicious that might have happened before (e.g. Low confidence when detecting an
 unknown encoding)
 
 ```ruby
-  if mission.fulfill
+  if job.run
     # hooray
   else
-    puts mission.report.join("\n")
+    puts job.report.join("\n")
   end
 ```
 
@@ -51,12 +51,12 @@ All the functionalities from all the following examples can be combined in any w
 #### Transcoding
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     encoding('ISO-8859-1')
   end
   
-  mission.want do
+  job.want do
     file('output.srt')
     encoding('UTF-8')
   end
@@ -65,19 +65,19 @@ All the functionalities from all the following examples can be combined in any w
 #### Converting
 
 ```ruby
-  mission.have { file('input.ass') }
-  mission.want { file('output.srt') }
+  job.have { file('input.ass') }
+  job.want { file('output.srt') }
 ```
 
 #### Simple timeshifting
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     reference('first sentence spoken', subtitle: 0)
   end
   
-  mission.want do
+  job.want do
     file('output.srt')
     reference('first sentence spoken', srt_timecode: '00:00:54,200')
   end
@@ -86,13 +86,13 @@ All the functionalities from all the following examples can be combined in any w
 #### Progressive timeshifting
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     reference('first subtitle', subtitle: 0)
     reference('last subtitle', subtitle: 475)
   end
   
-  mission.want do
+  job.want do
     file('output.srt')
     reference('first subtitle', minutes: 3.76)
     reference('last subtitle', hours: 1.8912)
@@ -102,12 +102,12 @@ All the functionalities from all the following examples can be combined in any w
 #### Framerate-based timeshifting
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     fps(25)
   end
   
-  mission.want do
+  job.want do
     file('output.srt')
     fps(23.976)
   end
@@ -116,13 +116,13 @@ All the functionalities from all the following examples can be combined in any w
 #### Mixed mode timeshifting
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     fps(25)
     reference(:first_sub, subtitle: 0)
   end
   
-  mission.want do
+  job.want do
     file('output.srt')
     fps(23.976)
     reference(:first_sub, minute: 13.49)    
@@ -134,15 +134,15 @@ All the functionalities from all the following examples can be combined in any w
 Subtitles that don't overlap are automatically merged and treated as one track.
 
 ```ruby
-  mission.have do
+  job.have do
     file('subs_chapter1.srt')
   end
 
-  mission.have do
+  job.have do
     file('subs_chapter2.srt')
   end
 
-  mission.want do
+  job.want do
     file('subs_both_chapters_combined.srt')
   end
 ```
@@ -154,16 +154,16 @@ you have to supply a reference so misaligned subtitles can be automatically shif
 to do this, your subtitles overlap and thus Titlekit assumes that you want simultaneous subtitles (which are explained in the next paragraph below this one).
 
 ```ruby
-  mission.have do
+  job.have do
     file('subs_cd1.srt')
   end
 
-  mission.have do
+  job.have do
     file('subs_cd2.srt')
     reference(:cd2_subtitles_starting_at, minutes: 0)
   end
 
-  mission.want do
+  job.want do
     reference(:cd2_subtitles_starting_at, srt_timecode: '00:01:24,000')
     file('subs_both_cds_combined.srt')
   end
@@ -175,9 +175,9 @@ Subtitles that overlap are automatically treated as simultaneous/multi-lanugage 
 Titlekit then positions and formats them in the most sensible way it sees fit.
 
 ```ruby
-  mission.have { file('enlish.srt') }
-  mission.have { file('dutch.srt') }
-  mission.want { file('dual-language.srt') }
+  job.have { file('enlish.srt') }
+  job.have { file('dutch.srt') }
+  job.want { file('dual-language.srt') }
 ```
 
 Any target format is possible, Titlekit will automatically make the best use of the formatting
@@ -185,23 +185,23 @@ features your target format provides. Pick a sophisticated subtitle format, and 
 subtitles will automatically be prettier and more readable!
 
 ```ruby
-  mission.have { file('enlish.srt') }
-  mission.have { file('dutch.srt') }
-  mission.want { file('dual-language-prettier.ass') }
+  job.have { file('enlish.srt') }
+  job.have { file('dutch.srt') }
+  job.want { file('dual-language-prettier.ass') }
 ```
 
 You can also go crazy if you want, Titlekit can handle it.
 
 ```ruby
-  mission.have { file('enlish.srt') }
-  mission.have { file('dutch.srt') }
-  mission.have { file('spanish.srt') }
-  mission.have { file('german.srt') }
-  mission.have { file('italian.srt') }
-  mission.have { file('french.srt') }
-  mission.have { file('portuguese.srt') }
-  mission.have { file('russian.srt') }
-  mission.want { file('messy-but-supported.ssa') }
+  job.have { file('enlish.srt') }
+  job.have { file('dutch.srt') }
+  job.have { file('spanish.srt') }
+  job.have { file('german.srt') }
+  job.have { file('italian.srt') }
+  job.have { file('french.srt') }
+  job.have { file('portuguese.srt') }
+  job.have { file('russian.srt') }
+  job.want { file('messy-but-supported.ssa') }
 ```
 
 #### Mixed mode Merging (implicit)
@@ -209,12 +209,12 @@ You can also go crazy if you want, Titlekit can handle it.
 If you really need the absurdly exotic case of merging multi-part subtitles into multiple simultaneous tracks, you just need to make sure you enter them in the correct order, which is: Lanuage1/Part1 -> Language1/Part2 -> Language2/Part1 -> Language2/Part2
 
 ```ruby
-  mission.have { file('subs_english_chapter1.srt')
-  mission.have { file('subs_english_chapter2.srt')
-  mission.have { file('subs_french_chapter1.srt')
-  mission.have { file('subs_french_chapter2.srt')
+  job.have { file('subs_english_chapter1.srt')
+  job.have { file('subs_english_chapter2.srt')
+  job.have { file('subs_french_chapter1.srt')
+  job.have { file('subs_french_chapter2.srt')
 
-  mission.want do
+  job.want do
     file('subs_multi_part_multi_track.srt')
   end
 ```
@@ -226,27 +226,27 @@ you can also forget all about the otherwise required order and just go wild:
 
 ```ruby
 
-  mission.have do
+  job.have do
     file('subs_french_chapter2.srt')
     track('le-french-track')
   end
 
-  mission.have do
+  job.have do
     file('subs_english_chapter1.srt')
     track('the-english-one')
   end
 
-  mission.have do
+  job.have do
     file('subs_french_chapter1.srt')
     track('le-french-track')
   end
 
-  mission.have do
+  job.have do
     file('subs_english_chapter2.srt')
     track('the-english-one')
   end
 
-  mission.want do
+  job.want do
     file('subs_multi_part_multi_track.srt')
   end
 ```
@@ -254,45 +254,45 @@ you can also forget all about the otherwise required order and just go wild:
 #### Multiple targets
 
 ```ruby
-  mission.have { file('input.srt') }
-  mission.want { file('output.ass') }
-  mission.want { file('output.ssa') }
+  job.have { file('input.srt') }
+  job.want { file('output.ass') }
+  job.want { file('output.ssa') }
 ```
 
 #### Templates
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     encoding('Shift_JIS')
     reference(:some_subtitle, subtitle: 23)
   end
   
-  templ = mission.want do
+  templ = job.want do
     file('output.srt')
     encoding('UTF-8')
     reference(:some_subtitle, hours: 0.16)
   end
   
-  mission.want(template: templ) { file('output.ass') }
-  mission.want(template: templ) { file('output.ssa') }
+  job.want(template: templ) { file('output.ass') }
+  job.want(template: templ) { file('output.ssa') }
 ```
 
 #### Explicitly control encoding detection
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     encoding(:detect) # Detect the encoding with charlock_holmes if installed, otherwise rchardet19
                       # You don't need to supply this line though, it's the default behavior!
   end
 
-  mission.have do
+  job.have do
     file('input.srt')
     encoding(:rchardet19) # Explicitly use rchardet19
   end  
   
-  mission.have do
+  job.have do
     file('input.srt')
     encoding(:charlock_holmes) # Explicitly use charlock_holmes
   end
@@ -303,21 +303,21 @@ you can also forget all about the otherwise required order and just go wild:
 `#have` and `#want` offer three different syntax variants, which are functionally identical:
 
 ```ruby
-  mission.have do
+  job.have do
     file('input.srt')
     encoding('ISO-8859-1')
   end
   
   # is identical to
   
-  mission.have do |have|
+  job.have do |have|
     have.file('input.srt')
     have.encoding('ISO-8859-1')
   end
   
   # is identical to
   
-  have = mission.have
+  have = job.have
   have.file('input.srt')
   have.encoding('ISO-8859-1')
 ```

@@ -1,5 +1,5 @@
 # This is a fictional file format, unsupported by Titlekit
-# Used in order to test graceful mission aborting
+# Used in order to test graceful job aborting
 
 % In this format there might be subtitles
 (But {ANYTHING}.goes-really(here:true))

@@ -1,6 +1,6 @@
 require File.join(File.expand_path(__dir__), '../spec_helper')
 
-describe Titlekit::Mission do
+describe Titlekit::Job do
 
   describe 'Format conversion' do
     
@@ -13,16 +13,16 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -39,16 +39,16 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -65,16 +65,16 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
 
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -91,16 +91,16 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do 
-        mission = Titlekit::Mission.new
+      it 'runs the job' do 
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do

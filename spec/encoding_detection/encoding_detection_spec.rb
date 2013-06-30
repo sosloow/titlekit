@@ -1,6 +1,6 @@
 require File.join(File.expand_path(__dir__), '../spec_helper')
 
-describe Titlekit::Mission do
+describe Titlekit::Job do
 
   describe 'Encoding detection' do
 
@@ -14,17 +14,17 @@ describe Titlekit::Mission do
       end
 
       it 'tries its best and takes graceful actions no matter what' do
-        mission = Titlekit::Mission.new
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
         
-        mission.fulfill
+        job.run
 
-        expect(mission.report.join).to include('detected')
+        expect(job.report.join).to include('detected')
       end     
     end
 
@@ -39,17 +39,17 @@ describe Titlekit::Mission do
       end
 
       it 'tries its best and takes graceful actions no matter what' do
-        mission = Titlekit::Mission.new
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
 
-        mission.fulfill
+        job.run
         
-        expect(mission.report.join).to include('detected')
+        expect(job.report.join).to include('detected')
       end
     end
 
@@ -64,17 +64,17 @@ describe Titlekit::Mission do
       end
 
       it 'tries its best and takes graceful actions no matter what' do
-        mission = Titlekit::Mission.new
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.file(@out)
         
-        mission.fulfill
+        job.run
         
-        expect(mission.report.join).to include('detected')
+        expect(job.report.join).to include('detected')
       end
     end
   end

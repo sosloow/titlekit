@@ -1,7 +1,7 @@
 module Titlekit
   class Specification
 
-    # Only for internal usage by the mission control center
+    # Only for internal usage by the job control center
     attr_accessor :subtitles
 
     def initialize

@@ -1,6 +1,6 @@
 require File.join(File.expand_path(__dir__), '../spec_helper')
 
-describe Titlekit::Mission do
+describe Titlekit::Job do
 
   describe 'Automatic grouping' do
     
@@ -15,12 +15,12 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
-        @ins.each { |file| mission.have.file(file).encoding('UTF-8') }
-        mission.want.file(@out)
+      it 'runs the job' do
+        job = Titlekit::Job.new
+        @ins.each { |file| job.have.file(file).encoding('UTF-8') }
+        job.want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -39,12 +39,12 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
-        @ins.each { |file| mission.have.file(file).encoding('UTF-8') }
-        mission.want.file(@out)
+      it 'runs the job' do
+        job = Titlekit::Job.new
+        @ins.each { |file| job.have.file(file).encoding('UTF-8') }
+        job.want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do

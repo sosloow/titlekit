@@ -1,8 +1,8 @@
 module Titlekit
-  class AbortMission < StandardError
+  class AbortJob < StandardError
   end
 
-  class Mission
+  class Job
 
     # Returns everything we {Have}
     #
@@ -14,18 +14,18 @@ module Titlekit
     # @return [Array<Want>] All assigned {Want} specifications  
     attr_reader :wants
 
-    # Returns the mission report, which documents the direct cause of failures
-    # and any other unusual events that occur on the mission. (regardless if it
+    # Returns the job report, which documents the direct cause of failures
+    # and any other unusual events that occur on the job. (regardless if it
     # failed or succeeded)
     #
     # @return [Array<String>] All reported messages 
     attr_reader :report
 
-    # Starts a new mission.
+    # Starts a new job.
     #
-    # A mission requires at least one thing you {Have} and one thing you {Want}
-    # in order to be fulfillable. Use {Mission#have} and {Mission#want} to add
-    # and obtain specification interfaces for the mission.
+    # A job requires at least one thing you {Have} and one thing you {Want}
+    # in order to be runable. Use {Job#have} and {Job#want} to add
+    # and obtain specification interfaces for the job.
     #
     def initialize
       @haves = []
@@ -42,11 +42,11 @@ module Titlekit
       end  
     end
 
-    # Fulfills the mission.
+    # Fulfills the job.
     #
-    # @return [Boolean] true if the mission succeeds, false if it fails.
-    #   {Mission#report} provides information in case of failure.
-    def fulfill
+    # @return [Boolean] true if the job succeeds, false if it fails.
+    #   {Job#report} provides information in case of failure.
+    def run
       @wants.each do |want|
         @haves.each do |have|
           import(have)
@@ -62,34 +62,34 @@ module Titlekit
       end
 
       return true
-    rescue AbortMission
+    rescue AbortJob
       return false
     end
 
-    # Adds a new {Have} specification to your mission.
+    # Adds a new {Have} specification to your job.
     #
     # @example Using a block without a variable (careful: the scope changes!)
-    #   mission.have do
+    #   job.have do
     #     encoding('utf-8')
     #     file('path/to/my/input.srt')
     #     fps(25)
     #   end
     #   
     # @example Using a block and providing a variable
-    #   mission.have do |have|
+    #   job.have do |have|
     #     have.encoding('utf-8')
     #     have.file('path/to/my/input.srt')
     #     have.fps(25)
     #   end
     #   
     # @example Catching the reference and assigning things at any later point
-    #   have = mission.have
+    #   have = job.have
     #   have.encoding('utf-8')
     #   have.file('path/to/my/input.srt')
     #   have.fps(25)
     #
     # @example Cloning a previous specification and extending on it
-    #   have2 = mission.have(template: have1)
+    #   have2 = job.have(template: have1)
     #   have2.encoding('ISO-8859-1')
     #   have2.file('path/to/my/input2.srt')
     #
@@ -117,30 +117,30 @@ module Titlekit
       return specification
     end
 
-    # Adds a new {Want} specification to your mission.
+    # Adds a new {Want} specification to your job.
     #
     # @example Using a block without a variable (careful: the scope changes!)
-    #   mission.want do
+    #   job.want do
     #     encoding('utf-8')
     #     file('path/to/my/output.srt')
     #     fps(23.976)
     #   end
     #   
     # @example Using a block and providing a variable
-    #   mission.want do |want|
+    #   job.want do |want|
     #     want.encoding('utf-8')
     #     want.file('path/to/my/output.srt')
     #     want.fps((23.976)
     #   end
     #   
     # @example Catching the reference and assigning things at any later point
-    #   want = mission.want
+    #   want = job.want
     #   want.encoding('utf-8')
     #   want.file('path/to/my/output.srt')
     #   want.fps((23.976)
     #
     # @example Cloning a previous specification and extending on it
-    #   want2 = mission.want(template: want1)
+    #   want2 = job.want(template: want1)
     #   want2.encoding('ISO-8859-1')
     #   want2.file('path/to/my/output.ass')
     #
@@ -178,7 +178,7 @@ module Titlekit
         data = File.read(have.file)
       rescue
         @report << "Failure while reading #{have.file}"
-        raise AbortMission
+        raise AbortJob
       end
 
       begin
@@ -196,14 +196,14 @@ module Titlekit
         end
       rescue
         @report << "Failure while setting encoding for #{have.file}"
-        raise AbortMission
+        raise AbortJob
       end
 
       begin
         data.encode!('UTF-8')
       rescue
         @report << "Failure while transcoding #{have.file} from #{data.encoding} to intermediate UTF-8 encoding"
-        raise AbortMission
+        raise AbortJob
       end
 
       begin
@@ -219,7 +219,7 @@ module Titlekit
         end
       rescue
         @report << "Failure while importing #{File.extname(have.file)[1..3].upcase} from #{have.file}"
-        raise AbortMission
+        raise AbortJob
       end
     end
 
@@ -353,7 +353,7 @@ module Titlekit
         end
       rescue
         @report << "Failure while exporting #{File.extname(want.file)[1..3].upcase} for #{want.file}"
-        raise AbortMission
+        raise AbortJob
       ensure
         want.subtitles = nil
       end
@@ -363,7 +363,7 @@ module Titlekit
           data.encode!(want.encoding)
         rescue
           @report << "Failure while transcoding from #{data.encoding} to #{want.encoding} for #{want.file}"
-          raise AbortMission
+          raise AbortJob
         end
       end
 
@@ -371,7 +371,7 @@ module Titlekit
         IO.write(want.file, data)
       rescue
         @report << "Failure while writing to #{want.file}"
-        raise AbortMission
+        raise AbortJob
       end
     end
 

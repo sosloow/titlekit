@@ -1,6 +1,6 @@
 module Titlekit
 
-  # Specifies existing input for a mission.
+  # Specifies existing input for a job.
   class Have < Specification
 
     def initialize

@@ -1,6 +1,6 @@
 require File.join(File.expand_path(__dir__), '../spec_helper')
 
-describe Titlekit::Mission do
+describe Titlekit::Job do
 
   describe 'Transcoding' do
 
@@ -13,18 +13,18 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.encoding('ISO-8859-1')
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.encoding('UTF-8')
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -41,18 +41,18 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.encoding('Windows-1252')
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.encoding('UTF-8')
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -69,18 +69,18 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.encoding('UTF-8')
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.encoding('GBK')
         want.file(@out)
         
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -97,19 +97,19 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'gracefully aborts the mission' do
-        mission = Titlekit::Mission.new
+      it 'gracefully aborts the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.encoding('GB2312')
         have.file(@in)
         
-        want = mission.want
+        want = job.want
         want.encoding('ASCII')
         want.file(@out)
         
-        expect(mission.fulfill).to be_false
-        expect(mission.report.join).to include('Failure while transcoding')
+        expect(job.run).to be_false
+        expect(job.report.join).to include('Failure while transcoding')
       end
     end        
   end

@@ -1,6 +1,6 @@
 require File.join(File.expand_path(__dir__), '../spec_helper')
 
-describe Titlekit::Mission do
+describe Titlekit::Job do
 
   describe 'Timecode correction' do
 
@@ -13,18 +13,18 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         have.fps(25)
 
-        want = mission.want
+        want = job.want
         want.file(@out)
         want.fps(30)
 
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -41,18 +41,18 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         have.reference('first subtitle', seconds: 2)
 
-        want = mission.want
+        want = job.want
         want.file(@out)
         want.reference('first subtitle', seconds: 3.5)
 
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -69,20 +69,20 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         have.fps(25)
         have.reference('first subtitle', subtitle: 0)
 
-        want = mission.want
+        want = job.want
         want.file(@out)
         have.fps(23.976)
         want.reference('first subtitle', seconds: 3.5)
 
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
@@ -99,20 +99,20 @@ describe Titlekit::Mission do
         File.delete(@out) if File.exist?(@out)
       end
 
-      it 'fulfills the mission' do
-        mission = Titlekit::Mission.new
+      it 'runs the job' do
+        job = Titlekit::Job.new
 
-        have = mission.have
+        have = job.have
         have.file(@in)
         have.reference('first subtitle', seconds: 2.364)
         have.reference('last subtitle', seconds: 24)
 
-        want = mission.want
+        want = job.want
         want.file(@out)
         want.reference('first subtitle', seconds: 2.4)
         want.reference('last subtitle', seconds: 32)
 
-        expect(mission.fulfill).to be_true
+        expect(job.run).to be_true
       end
 
       it 'delivers the expected output' do
