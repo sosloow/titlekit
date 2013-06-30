@@ -3,24 +3,28 @@ require 'treetop'
 module Titlekit
   module ASS
 
+    # Internal intermediate class used for parsing with treetop
     class Subtitles < Treetop::Runtime::SyntaxNode
       def build
         event_section.events.build
       end
     end
 
+    # Internal intermediate class used for parsing with treetop
     class ScriptInfo < Treetop::Runtime::SyntaxNode
       def build
         # elements.map { |subtitle| subtitle.build }
       end
     end
 
+    # Internal intermediate class used for parsing with treetop
     class V4PStyles < Treetop::Runtime::SyntaxNode
       def build
         # elements.map { |subtitle| subtitle.build }
       end
     end
 
+    # Internal intermediate class used for parsing with treetop
     class Events < Treetop::Runtime::SyntaxNode
       def build
         elements.map do |line|
@@ -38,9 +42,10 @@ module Titlekit
       end
     end
 
-    # Parses the supplied string and returns the results.
+    # Parses the supplied string and builds the resulting subtitles array.
     #
-    #
+    # @param string [String] proper UTF-8 ASS file content
+    # @return [Array<Hash>] the imported subtitles
     def self.import(string)
       Treetop.load(File.join(__dir__, 'ass'))
       parser = ASSParser.new
@@ -119,6 +124,10 @@ module Titlekit
       end
     end
 
+    # Exports the supplied subtitles to ASS format
+    #
+    # @param subtitles [Array<Hash>] The subtitle to export
+    # @return [String] Proper UTF-8 ASS as a string
     def self.export(subtitles)
       result = ''
 
@@ -159,6 +168,10 @@ module Titlekit
 
     protected
 
+    # Builds an ASS-formatted timecode from a float representing seconds
+    #
+    # @param seconds [Float] an amount of seconds
+    # @return [String] An ASS-formatted timecode ('h:mm:ss.ms')
     def self.build_timecode(seconds)
       sprintf("%01d:%02d:%02d.%s",
               seconds / 3600,
@@ -167,6 +180,10 @@ module Titlekit
               sprintf("%.2f", seconds)[-2, 3])
     end
 
+    # Parses an ASS-formatted timecode into a float representing seconds
+    #
+    # @param timecode [String] An ASS-formatted timecode ('h:mm:ss.ms')
+    # @param [Float] an amount of seconds
     def self.parse_timecode(timecode)
       mres = timecode.match(/(?<h>\d):(?<m>\d{2}):(?<s>\d{2})[:|\.](?<ms>\d+)/)
       return "#{mres["h"].to_i * 3600 + mres["m"].to_i * 60 + mres["s"].to_i}.#{mres["ms"]}".to_f

@@ -4,14 +4,14 @@ module Titlekit
 
   class Job
 
-    # Returns everything we {Have}
+    # Returns everything you {Have}
     #
-    # @return [Array<Have>] All assigned {Have} specifications
+    # @return [Array<Have>] Everything you {Have}
     attr_reader :haves
 
-    # Returns everything we {Want}
+    # Returns everything you {Want}
     #
-    # @return [Array<Want>] All assigned {Want} specifications  
+    # @return [Array<Want>] Everything you {Want}
     attr_reader :wants
 
     # Returns the job report, which documents the direct cause of failures
@@ -23,7 +23,7 @@ module Titlekit
 
     # Starts a new job.
     #
-    # A job requires at least one thing you {Have} and one thing you {Want}
+    # A job requires at least one file you {Have} and one file you {Want}
     # in order to be runable. Use {Job#have} and {Job#want} to add
     # and obtain specification interfaces for the job.
     #
@@ -42,7 +42,7 @@ module Titlekit
       end  
     end
 
-    # Fulfills the job.
+    # Runs the job.
     #
     # @return [Boolean] true if the job succeeds, false if it fails.
     #   {Job#report} provides information in case of failure.
@@ -258,7 +258,9 @@ module Titlekit
       end
     end
 
-    # Clean out subtitles that fell out of the usable time range
+    # Cleans out subtitles that fell out of the usable time range
+    #
+    # @params have [Have] What we {Have}   
     def cull(have)
       have.subtitles.reject! { |subtitle| subtitle[:end] < 0 }
       have.subtitles.each do |subtitle|
@@ -266,8 +268,10 @@ module Titlekit
       end
     end
 
-    # Assign track identification fields for distinguishing
+    # Assigns track identification fields for distinguishing
     # between continuous/simultaneous subtitles
+    #
+    # @params have [Have] What we {Have} 
     def group(have)
       if have.track
         # Assign a custom track identifier if one was supplied
@@ -391,6 +395,12 @@ module Titlekit
       end
     end
 
+    # Rescales timecodes based on two differing framerates and then applies a
+    # simple timeshift to the subtitles we {Have}.
+    #
+    # @param have [Have] the subtitles we {Have}
+    # @param want [Want] the subtitles we {Want}
+    # @param reference [Symbol, String] the key of the reference
     def retime_by_framerate_plus_reference(have, want, reference)
       ratio = want.fps.to_f / have.fps.to_f
       have.references[reference][:timecode] *= ratio
@@ -435,6 +445,10 @@ module Titlekit
       end
     end
 
+    # Rescales timecodes based on two differing framerates.
+    #
+    # @param have [Have] the subtitles we {Have}
+    # @param want [Want] the subtitles we {Want}
     def retime_by_framerate(have, want)
       ratio = want.fps.to_f / have.fps.to_f
       have.subtitles.each do |subtitle|

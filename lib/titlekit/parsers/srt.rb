@@ -3,12 +3,14 @@ require 'treetop'
 module Titlekit
   module SRT
 
+    # Internal intermediate class used for parsing with treetop
     class Subtitles < Treetop::Runtime::SyntaxNode
       def build
         elements.map { |subtitle| subtitle.build }
       end
     end
 
+    # Internal intermediate class used for parsing with treetop
     class Subtitle < Treetop::Runtime::SyntaxNode
       def build
         {
@@ -20,6 +22,7 @@ module Titlekit
       end
     end
 
+    # Internal intermediate class used for parsing with treetop
     class Timecode < Treetop::Runtime::SyntaxNode
       def build
         value = 0
@@ -31,9 +34,10 @@ module Titlekit
       end
     end
 
-    # Parses the supplied string and returns the results.
+    # Parses the supplied string and builds the resulting subtitles array.
     #
-    #
+    # @param string [String] proper UTF-8 SRT file content
+    # @return [Array<Hash>] the imported subtitles
     def self.import(string)
       Treetop.load(File.join(__dir__, 'srt'))
       parser = SRTParser.new
@@ -104,6 +108,10 @@ module Titlekit
       end
     end
 
+    # Exports the supplied subtitles to SRT format
+    #
+    # @param subtitles [Array<Hash>] The subtitle to export
+    # @return [String] Proper UTF-8 SRT as a string
     def self.export(subtitles)
       result = ''
 
@@ -123,6 +131,10 @@ module Titlekit
 
     protected
 
+    # Builds an SRT-formatted timecode from a float representing seconds
+    #
+    # @param seconds [Float] an amount of seconds
+    # @return [String] An SRT-formatted timecode ('hh:mm:ss,ms')
     def self.build_timecode(seconds)
       sprintf("%02d:%02d:%02d,%s",
               seconds / 3600,
@@ -131,6 +143,10 @@ module Titlekit
               sprintf("%.3f", seconds)[-3, 3])
     end
 
+    # Parses an SRT-formatted timecode into a float representing seconds
+    #
+    # @param timecode [String] An SRT-formatted timecode ('hh:mm:ss,ms')
+    # @param [Float] an amount of seconds
     def self.parse_timecode(timecode)
       mres = timecode.match(/(?<h>\d+):(?<m>\d+):(?<s>\d+),(?<ms>\d+)/)
       "#{mres["h"].to_i * 3600 + mres["m"].to_i * 60 + mres["s"].to_i}.#{mres["ms"]}".to_f

@@ -1,7 +1,7 @@
 module Titlekit
   class Specification
 
-    # Only for internal usage by the job control center
+    # Only for internal usage by the job
     attr_accessor :subtitles
 
     def initialize
@@ -15,6 +15,8 @@ module Titlekit
       return self
     end
 
+    # Specifies the encoding you have or want.
+    #
     # @param [String] A string specifying the encoding, e.g. 'utf-8' or 'ISO-8859-1'
     # @return If you omit the argument, it returns the already specified encoding
     def encoding(*args)
@@ -26,6 +28,8 @@ module Titlekit
       end
     end
 
+    # Specifies the file (path) you have or want.
+    #
     # @param [String] A string specifying the path to the file
     # @return If you omit the argument, it returns the already specified path 
     def file(*args)
@@ -37,6 +41,8 @@ module Titlekit
       end
     end
 
+    # Specifies the track the subtitles should be assigned to.
+    #
     # @param [String] A string specifying the track identifier
     # @return If you omit the argument, it returns the already specified track 
     def track(*args)
@@ -48,6 +54,8 @@ module Titlekit
       end
     end      
 
+    # Specifies the framerate you have or want.
+    #
     # @param [Float] A float specifying the frames per second, e.g. 23.976
     # @return If you omit the argument, it returns the already specified fps
     def fps(*args)
