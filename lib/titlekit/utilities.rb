@@ -1,0 +1,3 @@
+module Titlekit
+  DEFAULT_PALETTE = %w{EDF393 F5E665 FFC472 FFA891 89BABE}
+end

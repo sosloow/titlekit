@@ -1,0 +1,5 @@
+1
+00:00:30,000 --> 00:00:33,600
+If this subtitle represents timecodes for a 25fps movie
+Then it would have to start at 00:00:30,000 in a 30fps movie
+

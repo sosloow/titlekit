@@ -1,0 +1,11 @@
+1
+00:00:02,000 --> 00:00:10,000
+Somos utilizando tres subtítulos simultáneamente
+
+2
+00:00:12,000 --> 00:00:20,500
+Esto es correcto
+
+3
+00:00:23,000 --> 00:00:31,000
+No son alineado sin embargo

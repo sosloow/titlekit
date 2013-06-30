@@ -1,0 +1,11 @@
+1
+00:00:02,500 --> 00:00:10,000
+Wir verwenden drei Untertitel zur gleichen Zeit
+
+2
+00:00:12,500 --> 00:00:21,000
+Das stimmt
+
+3
+00:00:22,000 --> 00:00:30,000
+Sie sind jedoch nicht ganz synchron

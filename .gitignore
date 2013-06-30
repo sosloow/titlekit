@@ -1,0 +1,17 @@
+*.gem
+.bundle
+.config
+.ruby-gemset
+.ruby-version
+.rvmrc
+.rspec
+.yardoc
+Gemfile.lock
+doc/
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp

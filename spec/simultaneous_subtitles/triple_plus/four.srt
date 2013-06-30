@@ -1,0 +1,11 @@
+1
+00:00:01,000 --> 00:00:11,000
+Wir verwenden zu viele Untertitel zur gleichen Zeit
+
+2
+00:00:12,200 --> 00:00:20,200
+Die Dinge geraten aus dem Ruder
+
+3
+00:00:22,800 --> 00:00:30,500
+Sie sind überhaupt nicht synchron aber wen interessiert das schon
