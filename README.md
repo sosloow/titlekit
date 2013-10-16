@@ -6,8 +6,6 @@ Featureful Ruby 2 library for SRT / ASS / SSA subtitles
 
 ## Installation
 
-**Patch level 2.0.0-p195 is mandatory because it contains necessary bugfixes for the new keyword arguments.**
-
 Add the `titlekit` gem to your gemfile or install it yourself:
 
      $ gem install titlekit
