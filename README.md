@@ -49,7 +49,7 @@ To get you started quickly with edit scripts for subtitles, you can use a consol
 
      $ titlekit templates
 
-If there are no subtitle files present in your current directory, this will generate a file called `process_generic.rb`, if there are subtitle files present, it will generate a file called `process_[your-subtitle-filename].rb for each subtitle file that was found. In either case all of these files will contain a basic but complete scaffolding script for processing your subtitle file with Titlekit. In the case of the non-generic templates, they will already contain the correct filename for the input file. Together with some concise in-line comments, these templates are meant to help you quickly start off with your task.
+If there are no subtitle files present in your current directory, this will generate a file called `process_generic.rb`, if there are subtitle files present, it will generate a file called `process_[your-subtitle-filename].rb` for each subtitle file that was found. In either case all of these files will contain a basic but complete scaffolding script for processing your subtitle file with Titlekit. In the case of the non-generic templates, they will already contain the correct filename for the input file. Together with some concise in-line comments, these templates are meant to help you quickly start off with your task.
 
 ### All features by example
 
