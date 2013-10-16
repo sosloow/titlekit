@@ -43,13 +43,13 @@ unknown encoding)
   end
 ```
 
-### Template
+### Commandline Template Generator
 
-To get you started quickly with an edit script for subtitles, you can use a console command provided by Titlekit:
+To get you started quickly with edit scripts for subtitles, you can use a console command provided by Titlekit:
 
-     $ titlekit template [optional_title]
+     $ titlekit templates
 
-This will generate either `template_job.rb` or `[optional_title].rb` if you have provided an optional title (Inside the directory you are in). The template script contains a basically complete Titlekit script, you just need to fill in your filenames, encodings, references, etc. as needed. There are also some comments included so you know where to start off!
+If there are no subtitle files present in your current directory, this will generate a file called `process_generic.rb`, if there are subtitle files present, it will generate a file called `process_[your-subtitle-filename].rb for each subtitle file that was found. In either case all of these files will contain a basic but complete scaffolding script for processing your subtitle file with Titlekit. In the case of the non-generic templates, they will already contain the correct filename for the input file. Together with some concise in-line comments, these templates are meant to help you quickly start off with your task.
 
 ### All features by example
 

@@ -1,10 +1,16 @@
 #!/usr/bin/env ruby
 
-if ARGV.length > 0 && ARGV[0] == 'template'
+if ARGV.length > 0 && (ARGV[0] == 'template' || ARGV[0] == 'templates')
 
-  filename = ARGV.length > 1 ? ARGV[1] + '.rb' : 'template_job.rb'
+  filenames = []
+  filenames += Dir.glob('**/*.srt')
+  filenames += Dir.glob('**/*.ssa')
+  filenames += Dir.glob('**/*.ass')
+  filenames += ['generic.srt'] if filenames.empty?
   
-  content = <<HERETEMPLATE
+  filenames.each do |filename|
+
+    content = <<HERETEMPLATE
 require 'titlekit'
 
 job = Titlekit::Job.new
@@ -12,7 +18,7 @@ job = Titlekit::Job.new
 job.have do
 
   # Specify the file you already have; Also works with .ssa and .ass
-  file('original.srt')
+  file('#{filename}')
 
   # Change this to your encoding, uncomment if you don't know
   encoding('utf-8')
@@ -28,7 +34,7 @@ end
 job.want do
 
   # Specify the file to be created; Also works with .ssa and .ass
-  file('target.srt')
+  file('processed_#{filename}')
 
   # Change this to your desired target encoding
   encoding('utf-8')
@@ -50,13 +56,11 @@ end
 
 HERETEMPLATE
 
-  IO.write(filename, content)
+    IO.write("process_#{filename}.rb", content)
 
-  puts "Created generic job script '#{filename}' in current directory;"
-  puts "Edit and then run with 'ruby #{filename}'"
-
+    puts "Created template 'process_#{filename}.rb' in current directory"
+  end
 else
   puts 'Your either provided an unknown option, or none at all;'
-  puts 'Currently only \'template [optional_title]\' is available;'
-  puts 'E.g. \'titlekit template myscript\''
+  puts 'Try out \'titlekit template\' (\'titlekit templates\' works too).'
 end
