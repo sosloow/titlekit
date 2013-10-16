@@ -214,6 +214,8 @@ module Titlekit
           SSA.import(data)
         when '.srt'
           SRT.import(data)
+        when '.yt'
+          YT.import(data)        
         else
           raise 'Not supported'
         end
@@ -352,6 +354,9 @@ module Titlekit
         when '.srt'
           SRT.master(want.subtitles)
           SRT.export(want.subtitles)
+        when '.yt'
+          YT.master(want.subtitles)
+          YT.export(want.subtitles)         
         else
           raise 'Not supported'
         end

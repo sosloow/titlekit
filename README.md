@@ -43,6 +43,14 @@ unknown encoding)
   end
 ```
 
+### Template
+
+To get you started quickly with an edit script for subtitles, you can use a console command provided by Titlekit:
+
+     $ titlekit template [optional_title]
+
+This will generate either `template_job.rb` or `[optional_title].rb` if you have provided an optional title (Inside the directory you are in). The template script contains a basically complete Titlekit script, you just need to fill in your filenames, encodings, references, etc. as needed. There are also some comments included so you know where to start off!
+
 ### All features by example
 
 In all following examples I will omit `(1)` and `(4)` from the basic example, because they stay the same.  
