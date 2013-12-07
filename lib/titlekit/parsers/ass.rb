@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'treetop'
 
 module Titlekit
@@ -30,12 +31,12 @@ module Titlekit
         elements.map do |line|
           subtitle = {}
 
-          fields = line.text_value.split(',')
+          fields = line.build.text_value.split(',')
           
           subtitle[:id] = elements.index(line) + 1
           subtitle[:start] = SSA.parse_timecode(fields[1])
           subtitle[:end] = SSA.parse_timecode(fields[2])
-          subtitle[:lines] = fields[9..-1].join.gsub('\N', "\n")
+          subtitle[:lines] = fields[9..-1] ? fields[9..-1].join.gsub('\N', "\n") : ''
 
           subtitle
         end

@@ -43,7 +43,13 @@ grammar ASS
   end
 
   rule line
-    string (end_of_line / end_of_file)
+    comment? string (end_of_line / end_of_file) comment? {
+      def build; string; end
+    }
+  end
+
+  rule comment
+    (('!:' / 'Comment' / ';') string (end_of_line / end_of_file))*
   end
 
   rule end_of_section
